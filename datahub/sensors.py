@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, request, jsonify
 
 bp = Blueprint('sensors', __name__, url_prefix='/sensors')
 
@@ -14,3 +14,9 @@ def sensors(sensor_id):
             }
         }
     )
+
+
+@bp.route('/', methods=['POST'])
+def update():
+    data = request.get_json()
+    return jsonify(data)
