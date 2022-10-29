@@ -15,5 +15,5 @@ def sensors(sensor_id):
 
 @ bp.route('/', methods=['POST'])
 def update():
-    data = request.get_json()
-    return jsonify(data)
+    persistence_service = PersistenceService()
+    return jsonify(persistence_service.save(1, request.get_json()))
