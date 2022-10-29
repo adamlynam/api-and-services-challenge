@@ -1,22 +1,19 @@
 from flask import Blueprint, request, jsonify
 
+from datahub.services.persistence import PersistenceService
+
 bp = Blueprint('sensors', __name__, url_prefix='/sensors')
 
 
 @bp.route('/<sensor_id>', methods=['GET'])
 def sensors(sensor_id):
+    persistence_service = PersistenceService()
     return jsonify(
-        {
-            "data": {
-                "current": {
-                    "temperature": 18
-                }
-            }
-        }
+        persistence_service.get(sensor_id)
     )
 
 
-@bp.route('/', methods=['POST'])
+@ bp.route('/', methods=['POST'])
 def update():
     data = request.get_json()
     return jsonify(data)
