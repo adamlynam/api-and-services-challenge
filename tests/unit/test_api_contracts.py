@@ -24,10 +24,6 @@ def mock_temperature(mocker, temperature):
     return mocker.patch(
         'datahub.services.persistence.PersistenceService.get',
         return_value={
-            "data": {
-                "current": {
-                    "temperature": temperature
-                }
-            }
+            "temperature": temperature
         }
     )
