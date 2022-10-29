@@ -18,5 +18,6 @@ def sensors(sensor_id):
 @ bp.route('/<sensor_id>', methods=['PATCH'])
 def update(sensor_id):
     persistence_service = PersistenceService()
-    data = request.get_json()
-    return jsonify(persistence_service.save(sensor_id, data))
+    return jsonify({
+        "data": persistence_service.save(sensor_id, request.get_json()["data"])
+    })
