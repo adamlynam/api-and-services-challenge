@@ -7,9 +7,8 @@ def test_sensor_values_can_be_set_and_retreived(client):
 
 
 def set_temperature(client, sensor_id, temperature):
-    return client.post("/sensors/", json={
+    return client.patch(f"/sensors/{sensor_id}", json={
         "data": {
-            "id": sensor_id,
             "temperature": temperature,
         }
     })
