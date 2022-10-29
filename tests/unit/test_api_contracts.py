@@ -9,7 +9,7 @@ def test_get_current_sensor_value(client, mocker):
 
 
 def test_post_latest_sensor_value(client):
-    response = client.post("/sensors/", json={
+    response = client.patch("/sensors/1", json={
         "data": {
             "id": 1,
             "temperature": 18,
