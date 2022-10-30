@@ -1,9 +1,9 @@
-class PersistenceService:
+class InMemoryPersistenceService:
     store = {}
 
-    def save(self, sensor_id, configuration):
-        self.store[sensor_id] = configuration
+    def save(self, key, configuration):
+        self.store[key] = configuration
         return configuration
 
-    def get(self, sensor_id):
-        return self.store[sensor_id]
+    def get(self, key):
+        return self.store[key]

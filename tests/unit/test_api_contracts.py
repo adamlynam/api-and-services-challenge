@@ -30,7 +30,7 @@ def test_post_latest_sensor_value(client, mocker):
 
 def mock_get_temperature(mocker, temperature):
     return mocker.patch(
-        'datahub.services.persistence.PersistenceService.get',
+        'datahub.services.persistence.InMemoryPersistenceService.get',
         return_value={
             "temperature": temperature
         }
@@ -39,7 +39,7 @@ def mock_get_temperature(mocker, temperature):
 
 def mock_save_temperature(mocker, expected_temperature):
     return mocker.patch(
-        'datahub.services.persistence.PersistenceService.save',
+        'datahub.services.persistence.InMemoryPersistenceService.save',
         return_value={
             "temperature": expected_temperature
         }
