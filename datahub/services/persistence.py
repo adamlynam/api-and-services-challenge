@@ -6,4 +6,7 @@ class InMemoryPersistenceService:
         return configuration
 
     def get(self, key):
+        if (key not in self.store):
+            return None
+
         return self.store[key]
