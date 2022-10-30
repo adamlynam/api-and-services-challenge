@@ -1,3 +1,6 @@
+from datahub.sensors import CURRENT_SUFFIX
+
+
 def test_get_current_sensor_value(client, mocker):
     expected_temperature = 18
     mock_get_temperature(mocker, expected_temperature)
@@ -19,7 +22,7 @@ def test_post_latest_sensor_value(client, mocker):
     })
 
     spy_on_save.assert_called_once_with(
-        "1",
+        f"1{CURRENT_SUFFIX}",
         {
             "temperature": expected_temperature
         }
