@@ -43,6 +43,35 @@ def test_post_latest_sensor_value(client, mocker):
     assert response.json["data"]["temperature"] == expected_temperature
 
 
+def test_post_latest_sensor_value_accumulates_history(client, mocker):
+    previous_temperature = 18
+    new_temperature = 21
+    mock_get_from_store(mocker, return_value=[{
+        "temperature": previous_temperature
+    }])
+    spy_on_save = mock_save_to_store(mocker, mock_save_to_store(mocker, return_value={
+        "temperature": new_temperature
+    }))
+
+    client.patch("/sensors/1", json={
+        "data": {
+            "temperature": new_temperature,
+        }
+    })
+
+    spy_on_save.assert_any_call(
+        f"1{HISTORY_SUFFIX}",
+        [
+            {
+                "temperature": new_temperature
+            },
+            {
+                "temperature": previous_temperature
+            },
+        ]
+    )
+
+
 def mock_get_from_store(mocker, return_value):
     return mocker.patch(
         'datahub.services.persistence.InMemoryPersistenceService.get',
