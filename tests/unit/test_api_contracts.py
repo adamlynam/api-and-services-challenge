@@ -29,9 +29,11 @@ def test_post_latest_sensor_value(client, mocker):
     )
     spy_on_save.assert_any_call(
         f"1{HISTORY_SUFFIX}",
-        {
-            "temperature": expected_temperature
-        }
+        [
+            {
+                "temperature": expected_temperature
+            }
+        ]
     )
     assert response.status_code == 200
     assert response.json["data"]["temperature"] == expected_temperature

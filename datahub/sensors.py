@@ -23,5 +23,10 @@ def update(sensor_id):
     persistence_service = InMemoryPersistenceService()
     configuration_payload = request.get_json()["data"]
     persistence_service.save(sensor_id + CURRENT_SUFFIX, configuration_payload)
-    persistence_service.save(sensor_id + HISTORY_SUFFIX, configuration_payload)
+    persistence_service.save(
+        sensor_id + HISTORY_SUFFIX,
+        [
+            configuration_payload
+        ]
+    )
     return jsonify({"data": configuration_payload})
