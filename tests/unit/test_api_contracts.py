@@ -1,4 +1,4 @@
-from datahub.sensors import CURRENT_SUFFIX
+from datahub.sensors import CURRENT_SUFFIX, HISTORY_SUFFIX
 
 
 def test_get_current_sensor_value(client, mocker):
@@ -21,8 +21,14 @@ def test_post_latest_sensor_value(client, mocker):
         }
     })
 
-    spy_on_save.assert_called_once_with(
+    spy_on_save.assert_any_call(
         f"1{CURRENT_SUFFIX}",
+        {
+            "temperature": expected_temperature
+        }
+    )
+    spy_on_save.assert_any_call(
+        f"1{HISTORY_SUFFIX}",
         {
             "temperature": expected_temperature
         }
