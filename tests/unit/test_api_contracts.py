@@ -3,7 +3,9 @@ from datahub.sensors import CURRENT_SUFFIX, HISTORY_SUFFIX
 
 def test_get_current_sensor_value(client, mocker):
     expected_temperature = 18
-    mock_get_temperature(mocker, expected_temperature)
+    mock_get_from_store(mocker, return_value={
+        "temperature": expected_temperature
+    })
 
     response = client.get("/sensors/1")
 
@@ -13,7 +15,9 @@ def test_get_current_sensor_value(client, mocker):
 
 def test_post_latest_sensor_value(client, mocker):
     expected_temperature = 18
-    spy_on_save = mock_save_temperature(mocker, expected_temperature)
+    spy_on_save = mock_save_to_store(mocker, return_value={
+        "temperature": expected_temperature
+    })
 
     response = client.patch("/sensors/1", json={
         "data": {
@@ -39,19 +43,15 @@ def test_post_latest_sensor_value(client, mocker):
     assert response.json["data"]["temperature"] == expected_temperature
 
 
-def mock_get_temperature(mocker, temperature):
+def mock_get_from_store(mocker, return_value):
     return mocker.patch(
         'datahub.services.persistence.InMemoryPersistenceService.get',
-        return_value={
-            "temperature": temperature
-        }
+        return_value=return_value
     )
 
 
-def mock_save_temperature(mocker, expected_temperature):
+def mock_save_to_store(mocker, return_value):
     return mocker.patch(
         'datahub.services.persistence.InMemoryPersistenceService.save',
-        return_value={
-            "temperature": expected_temperature
-        }
+        return_value=return_value
     )
