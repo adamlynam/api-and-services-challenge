@@ -15,6 +15,7 @@ def test_get_current_sensor_value(client, mocker):
 
 def test_post_latest_sensor_value(client, mocker):
     expected_temperature = 18
+    mock_get_from_store(mocker, return_value=None)
     spy_on_save = mock_save_to_store(mocker, return_value={
         "temperature": expected_temperature
     })

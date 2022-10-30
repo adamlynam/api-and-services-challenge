@@ -25,8 +25,16 @@ def update(sensor_id):
     persistence_service.save(sensor_id + CURRENT_SUFFIX, configuration_payload)
     persistence_service.save(
         sensor_id + HISTORY_SUFFIX,
-        [
-            configuration_payload
-        ]
+        add_configuration_to_history(sensor_id, configuration_payload)
     )
     return jsonify({"data": configuration_payload})
+
+
+def add_configuration_to_history(sensor_id, configuration_payload):
+    persistence_service = InMemoryPersistenceService()
+    old_history = persistence_service.get(sensor_id + HISTORY_SUFFIX)
+    if old_history == None:
+        return [configuration_payload]
+    new_history = old_history.copy()
+    new_history.insert(0, configuration_payload)
+    return new_history
